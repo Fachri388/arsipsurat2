@@ -16,8 +16,11 @@
             </div>
         </div>
 
-		<?php var_dump($_GET); ?>
-		<?php var_dump($_POST); ?>
+		
+		<?php 
+			$page = $_GET['page'] ?? 1;
+		
+		?>
 		
 
 		<div class="navbar-form navbar-right">
@@ -46,13 +49,19 @@
 							</tr>
 						  </thead>
 						  <tbody>
+
+						  <!-- jika halamanya page 1 -->
+						  <!-- page 10 * 1 = 10--->
+						  <!-- jika page 2 = 2 * 20 dia menjalankan 20 -->
+						  <!-- batas page  -->
 						  	<?php
 						  	$no = 0;
 						  	foreach ($data_surat_masuk as $surat_masuk) {
-								if ($no < 10) {
+								  ++$no;
+								if ($no <= 10 * $page && $no > ($page * 10) - 10) {
 									echo '
 						  		<tr>
-						  				<td>'.++$no.'</td>
+						  				<td>'.$no.'</td>
 						  				<td>'.$surat_masuk->nomor_surat.'</td>
 						  				<td>'.$surat_masuk->pengirim.'</td>
 						  				<td>'.$surat_masuk->tgl_kirim.'</td>
@@ -77,33 +86,36 @@
 						  </tbody>
 						</table>
 
+						<!-- Pengaturan paginate -->
 						<nav aria-label="Page navigation example">
 						<ul class="pagination">
-							<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-							<form action="" method="get">
+							<!-- <li class="page-item"><a class="page-link" href="#">Previous</a></li> -->
 							<?php 
 							$x = 0;
 							for ($i=0; $i <= $no/10; $i++) { 
 								$x++;
-								
+								if ($page == $x) {
 								echo '
 									<li class="page-item active">
 										<a class="page-link" href="'. base_url() . 'surat/surat_masuk?page='.$x.'"> '. $x .'</a>
 									</li>
 								';
-
-								// echo '
-								// 	<li class="page-item active"><a class="page-link" href="'.  base_url().'surat/surat_masuk/'.$x.'"> '. $x .'</a></li>
-								// ';
+								}else{
+								echo '
+									<li class="page-item">
+										<a class="page-link" href="'. base_url() . 'surat/surat_masuk?page='.$x.'"> '. $x .'</a>
+									</li>
+								';
+								}
 							}
 							
 							?>
 							
-							<input type="submit" name="submit" value="submit">
-							<input type="hidden" name="aaa" value="<?php $x ?>">
-							</form>
-							
-							<li class="page-item"><a class="page-link" href="#">Next</a></li>
+							<!-- <li class="page-item">
+								<a class="page-link" href="<?php base_url() . 'surat/surat_masuk?page=' . $_GET['page']++?>">
+								 Next
+								</a>
+							</li> -->
 						</ul>
 						</nav>
 					   </div>
