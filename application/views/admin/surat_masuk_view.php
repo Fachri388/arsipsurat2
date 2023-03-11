@@ -15,6 +15,9 @@
                 ?>
             </div>
         </div>
+
+		<?php var_dump($_GET); ?>
+		<?php var_dump($_POST); ?>
 		
 
 		<div class="navbar-form navbar-right">
@@ -46,7 +49,8 @@
 						  	<?php
 						  	$no = 0;
 						  	foreach ($data_surat_masuk as $surat_masuk) {
-						  		echo '
+								if ($no < 10) {
+									echo '
 						  		<tr>
 						  				<td>'.++$no.'</td>
 						  				<td>'.$surat_masuk->nomor_surat.'</td>
@@ -64,12 +68,44 @@
 						  				</td>
 						  			</tr>
 						  		';
+								}
+						  		
 						  	}
 						  	 ?>
 							
 							
 						  </tbody>
 						</table>
+
+						<nav aria-label="Page navigation example">
+						<ul class="pagination">
+							<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+							<form action="" method="get">
+							<?php 
+							$x = 0;
+							for ($i=0; $i <= $no/10; $i++) { 
+								$x++;
+								
+								echo '
+									<li class="page-item active">
+										<a class="page-link" href="'. base_url() . 'surat/surat_masuk?page='.$x.'"> '. $x .'</a>
+									</li>
+								';
+
+								// echo '
+								// 	<li class="page-item active"><a class="page-link" href="'.  base_url().'surat/surat_masuk/'.$x.'"> '. $x .'</a></li>
+								// ';
+							}
+							
+							?>
+							
+							<input type="submit" name="submit" value="submit">
+							<input type="hidden" name="aaa" value="<?php $x ?>">
+							</form>
+							
+							<li class="page-item"><a class="page-link" href="#">Next</a></li>
+						</ul>
+						</nav>
 					   </div>
 					   
 						</div><!-- /.table-responsive -->
